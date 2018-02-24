@@ -22,7 +22,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <widget class="QGraphicsView" name="sceneGraphicsView">
+     <widget class="RuminaGraphicsView" name="sceneGraphicsView">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -32,39 +32,28 @@
      </widget>
     </item>
     <item>
-     <widget class="QToolBox" name="toolBox">
+     <widget class="QTabWidget" name="tabWidget">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Plain</enum>
-      </property>
-      <property name="lineWidth">
-       <number>1</number>
+      <property name="tabPosition">
+       <enum>QTabWidget::West</enum>
       </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <property name="tabSpacing">
-       <number>3</number>
+      <property name="documentMode">
+       <bool>false</bool>
       </property>
-      <widget class="QWidget" name="page">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>860</width>
-         <height>404</height>
-        </rect>
-       </property>
-       <attribute name="label">
-        <string>Edit properties</string>
+      <property name="movable">
+       <bool>false</bool>
+      </property>
+      <widget class="QWidget" name="tabWidgetPage1" native="true">
+       <attribute name="title">
+        <string>Edit item</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_7">
         <item>
@@ -334,12 +323,18 @@
                   </widget>
                  </item>
                  <item row="0" column="1">
-                  <widget class="QComboBox" name="file">
+                  <widget class="QLabel" name="file">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
+                   </property>
+                   <property name="text">
+                    <string>file.png</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -822,7 +817,7 @@
            </layout>
           </item>
           <item>
-           <widget class="QGraphicsView" name="spriteView"/>
+           <widget class="RuminaGraphicsView" name="spriteView"/>
           </item>
           <item>
            <widget class="QGraphicsView" name="mapView">
@@ -844,37 +839,100 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="page_2">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>822</width>
-         <height>233</height>
-        </rect>
-       </property>
-       <attribute name="label">
+      <widget class="QWidget" name="tabWidgetPage2" native="true">
+       <attribute name="title">
         <string>Add items</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_8">
         <item>
-         <widget class="QGraphicsView" name="fileView"/>
+         <widget class="RuminaGraphicsView" name="fileView"/>
         </item>
         <item>
-         <widget class="QTabBar" name="widget_2" native="true"/>
+         <widget class="RuminaTabBar" name="tabs" native="true"/>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QLabel" name="label_18">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>SPACE adds selected item.</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_19">
+            <property name="text">
+             <string>Alignment:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="comboBox">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <item>
+             <property name="text">
+              <string>bottom left</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>bottom center</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>bottom right</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>center left</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>center center</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>center right</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>top left</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>top center</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>top right</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="page_3">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>822</width>
-         <height>238</height>
-        </rect>
-       </property>
-       <attribute name="label">
+      <widget class="QWidget" name="tabWidgetPage3" native="true">
+       <attribute name="title">
         <string>Console</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -907,6 +965,48 @@ font-family: monospace;</string>
       </widget>
      </widget>
     </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_8">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Export &amp;&amp; launch</string>
+        </property>
+        <property name="autoDefault">
+         <bool>true</bool>
+        </property>
+        <property name="default">
+         <bool>true</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -920,16 +1020,25 @@ font-family: monospace;</string>
    </property>
    <widget class="QMenu" name="menuPlik">
     <property name="title">
-     <string>P&amp;lik</string>
+     <string>&amp;File</string>
     </property>
+    <addaction name="actionNew"/>
     <addaction name="actionOtw_rz"/>
+    <addaction name="separator"/>
     <addaction name="actionZapisz"/>
+    <addaction name="actionSave_as"/>
+    <addaction name="separator"/>
+    <addaction name="actionClose"/>
    </widget>
    <widget class="QMenu" name="menuPodgl_d">
     <property name="title">
-     <string>&amp;Gra</string>
+     <string>Ed&amp;it</string>
     </property>
     <addaction name="actionPodgl_d"/>
+    <addaction name="actionRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actionRe_import"/>
+    <addaction name="actionPreview"/>
    </widget>
    <addaction name="menuPlik"/>
    <addaction name="menuPodgl_d"/>
@@ -937,32 +1046,67 @@ font-family: monospace;</string>
   <action name="actionOtw_rz">
    <property name="icon">
     <iconset theme="file-open">
-     <normaloff>.</normaloff>.</iconset>
+     <normaloff>../../.designer/backup</normaloff>../../.designer/backup</iconset>
    </property>
    <property name="text">
-    <string>&amp;Otwórz...</string>
+    <string>&amp;Open</string>
    </property>
   </action>
   <action name="actionZapisz">
    <property name="icon">
     <iconset theme="save">
-     <normaloff>.</normaloff>.</iconset>
+     <normaloff>../../.designer/backup</normaloff>../../.designer/backup</iconset>
    </property>
    <property name="text">
-    <string>Zapi&amp;sz...</string>
+    <string>&amp;Save</string>
    </property>
   </action>
   <action name="actionPodgl_d">
    <property name="text">
-    <string>&amp;Podgląd</string>
+    <string>&amp;Undo</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="text">
+    <string>&amp;Redo</string>
+   </property>
+  </action>
+  <action name="actionRe_import">
+   <property name="text">
+    <string>Re-&amp;import</string>
+   </property>
+  </action>
+  <action name="actionPreview">
+   <property name="text">
+    <string>&amp;Preview</string>
+   </property>
+  </action>
+  <action name="actionSave_as">
+   <property name="text">
+    <string>Save as...</string>
+   </property>
+  </action>
+  <action name="actionClose">
+   <property name="text">
+    <string>Close</string>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="text">
+    <string>New</string>
    </property>
   </action>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QTabBar</class>
+   <class>RuminaTabBar</class>
    <extends>QWidget</extends>
-   <header>qtabbar.h</header>
+   <header>RuminaTabBar.h</header>
+  </customwidget>
+  <customwidget>
+   <class>RuminaGraphicsView</class>
+   <extends>QGraphicsView</extends>
+   <header>RuminaGraphicsView.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -976,7 +1120,6 @@ font-family: monospace;</string>
   <tabstop>z</tabstop>
   <tabstop>scale</tabstop>
   <tabstop>scaleVal</tabstop>
-  <tabstop>file</tabstop>
   <tabstop>sx</tabstop>
   <tabstop>sy</tabstop>
   <tabstop>sw</tabstop>
@@ -1002,22 +1145,5 @@ font-family: monospace;</string>
   <tabstop>fileView</tabstop>
  </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>consoleInput</sender>
-   <signal>textEdited(QString)</signal>
-   <receiver>console</receiver>
-   <slot>appendPlainText(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>88</x>
-     <y>650</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>96</x>
-     <y>505</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

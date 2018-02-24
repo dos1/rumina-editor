@@ -1,0 +1,49 @@
+Scene:
+
+<FILENAME> string
+<NUMBER_OF_ITEMS> uint32
+<ITEM_1>
+<ITEM_2>
+<ITEM_3>
+<...>
+<ITEM_N>
+
+String:
+
+<NUMBER_OF_BYTES> uint32
+<CHAR_1> uint8
+<CHAR_2> uint8
+<...>
+<CHAR_N> uint8
+
+character == utf-8 byte
+
+
+Item:
+
+<NAME> string
+<FILE> string
+<PLANE> uint8
+<HIGHLIGHTED> bool
+<HIDDEN> bool
+<X> double
+<Y> double
+<Z> double
+<ZOFFSET> double
+<SCALE> double
+<SX> uint32
+<SY> uint32
+<SW> uint32
+<SH> uint32
+<PX> double
+<PY> double
+<RX> double
+<RY> double
+<RZ> double
+<OX> double
+<OY> double
+<INTENSITY> double
+<BLENDING> uint8
+<OPACITY> double
+<TX> uint32
+<TY> uint32
