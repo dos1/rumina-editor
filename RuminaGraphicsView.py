@@ -12,9 +12,9 @@ class RuminaGraphicsView(QGraphicsView):
     _scale = 1
     _lastRb = None
     
-    def  __init__(self, parent=None):
+    def  __init__(self, parent=None, scene=None):
         super(QGraphicsView, self).__init__(parent=parent)
-        self.scene = QGraphicsScene(parent=self)
+        self.scene = scene if scene else QGraphicsScene(parent=self)
         self.setRenderHints(QPainter.SmoothPixmapTransform);
         self.setScene(self.scene)
         self.setBackgroundBrush(QBrush(QColor("grey"), Qt.Dense3Pattern))

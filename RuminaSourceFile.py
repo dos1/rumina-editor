@@ -6,26 +6,24 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 
-class RuminaSourceFile(QGraphicsObject):
+from RuminaGraphicsObject import RuminaGraphicsObject
+
+class RuminaSourceFile(RuminaGraphicsObject):
                         
     selectionChanged = pyqtSignal(int, int, int, int)
     selectionCleared = pyqtSignal()
-    itemAdded = pyqtSignal(QGraphicsObject, QRect)
+    itemAdded = pyqtSignal(RuminaGraphicsObject, QRect)
     image = None
-    item = None
+    pixmap = None
+    filename = None
     
     def __init__(self, filename, parent=None):
-        super(RuminaSourceFile, self).__init__(parent=parent)
-        self.item = QGraphicsPixmapItem(filename)
+        self.filename = filename
+        self.image = QImage(self.filename)
+        self.pixmap = QPixmap.fromImage(self.image)
+        super(RuminaSourceFile, self).__init__(QGraphicsPixmapItem(self.pixmap), parent=parent)
         self.setFlags(QGraphicsItem.ItemIsFocusable)
-        self.image = self.item.pixmap().toImage()
-        
-    def boundingRect(self):
-        return self.item.boundingRect()
-    
-    def paint(self, painter, option, widget):
-        return self.item.paint(painter, option, widget)
-        
+                
     def _hasSomePixel(self, x1, y1, x2, y2):
         if x1 < 0 or x2 < 0 or y1 < 0 or y2 < 0:
             return False
@@ -37,7 +35,10 @@ class RuminaSourceFile(QGraphicsObject):
             for y in range(y1, y2 + 1):
                 if self.image.pixelColor(x, y).alpha() > 0:
                     return True
-        return False  
+        return False
+    
+    def rect(self):
+        return self.pixmap.rect()
         
     def mousePressEvent(self, event):
         x = math.floor(event.pos().x())
