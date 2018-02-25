@@ -9,8 +9,8 @@ class RuminaTabBar(QTabBar):
     files = []
     fileChanged = pyqtSignal(str)
     
-    def __init__(self, parent):
-        super(RuminaTabBar, self).__init__(parent)
+    def __init__(self, parent=None):
+        super(RuminaTabBar, self).__init__(parent=parent)
         self.setDocumentMode(True)
         self.setDrawBase(False)
         self.setShape(QTabBar.RoundedSouth)

@@ -9,31 +9,59 @@ class RuminaGraphicsView(QGraphicsView):
     
     scene = None
     selection = None
+    _scale = 1
+    _lastRb = None
     
     def  __init__(self, parent=None):
-        self.scene = QGraphicsScene()
         super(QGraphicsView, self).__init__(parent=parent)
+        self.scene = QGraphicsScene(parent=self)
+        self.setRenderHints(QPainter.SmoothPixmapTransform);
         self.setScene(self.scene)
+        self.setBackgroundBrush(QBrush(QColor("grey"), Qt.Dense3Pattern))
+        self.setDragMode(QGraphicsView.RubberBandDrag)
         self.clear()
         self.resize()
         
+    def drawBackground(self, painter, rect):
+        painter.setWorldMatrixEnabled(False)
+        painter.fillRect(self.mapFromScene(rect).boundingRect(), self.backgroundBrush())
+        painter.setWorldMatrixEnabled(True)
+        painter.fillRect(self.scene.sceneRect(), QBrush(QColor(255, 255, 255, 64)))
+        
+    def drawForeground(self, painter, rect):
+        if self.selection:
+            painter.fillRect(self.selection, QBrush(QColor(0, 0, 255, 64)))
+        
     def clear(self):
         self.scene.clear()
-        checkerboard = self.scene.addRect(QRectF(-20000, -20000, 40000, 40000), QPen(QColor("transparent")), QBrush(QColor("grey"), Qt.Dense3Pattern))
-        checkerboard.setFlags(QGraphicsItem.ItemIgnoresTransformations)
-        self.selection = self.scene.addRect(QRectF(-20000, -20000, 0, 0), QPen(QColor("red")), QBrush(QColor(0,0,255, 64)))
-        self.selection.setZValue(99999)
+        self.clearSelection()
 
     def setSelection(self, x, y, w, h):
-        self.selection.setRect(QRectF(x, y, w, h))
+        selections = []
+        if self.selection:
+            selections.append(self.selection)
+        self.selection = QRectF(x, y, w, h)
+        selections.append(self.selection)
+        self.updateScene(selections)
+            
+    def setSelectionFromRubberBand(self, rect, pointFrom, pointTo):
+        if rect:
+            self._lastRb = QRectF(pointFrom, pointTo).normalized().intersected(self.scene.sceneRect())
+        else:
+            self.setSelection(self._lastRb.x(), self._lastRb.y(), self._lastRb.width(), self._lastRb.height())
+        
+    def clearSelection(self):
+        selection = self.selection
+        self.selection = None
+        if selection:
+            self.updateScene([selection])
 
     def resize(self):
         self.fitInView(self.scene.sceneRect(), Qt.KeepAspectRatio)
 
     def wheelEvent(self, event):
-        """
-        Zoom in or out of the view.
-        """
+        # Zoom in or out of the view.
+        
         if not (event.modifiers() & Qt.ControlModifier):
             return super(QGraphicsView, self).wheelEvent(event)
         
@@ -44,6 +72,7 @@ class RuminaGraphicsView(QGraphicsView):
 
         # Zoom
         self.scale(zoomFactor, zoomFactor)
+        self._scale = zoomFactor
 
         # Get the new position
         newPos = self.mapToScene(event.pos())

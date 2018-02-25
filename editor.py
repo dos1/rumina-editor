@@ -33,7 +33,7 @@ class SceneElement(QGraphicsPixmapItem):
     def getImage(self):
         return self.pixmap().toImage()
 
-class Scene:
+class Scene(object):
     
     bg = None
     
@@ -56,6 +56,8 @@ class Window(QMainWindow):
         self.ui.setupUi(self)
         self.ui.tabs.fileChanged.connect(self.fileChanged)
         self.ui.tabWidget.currentChanged.connect(lambda x: self.ui.fileView.resize())
+        self.ui.fileView.rubberBandChanged.connect(self.ui.fileView.setSelectionFromRubberBand)
+        self.ui.spriteView.setDragMode(QGraphicsView.NoDrag)
                 
     def loadScene(self, scene):
         self.scene = scene
@@ -75,9 +77,9 @@ class Window(QMainWindow):
         source = RuminaSourceFile(pixmap)
         self.ui.fileView.scene.addItem(source)
         source.selectionChanged.connect(self.ui.fileView.setSelection)
+        source.selectionCleared.connect(self.ui.fileView.clearSelection)
         self.ui.fileView.scene.setSceneRect(QRectF(pixmap.rect()))
         self.ui.fileView.resize()
-        #lastFileSelection = fileScene.addRect(QRectF(0, 0, 0, 0), QPen(QColor("red")), QBrush(QColor(0,0,255, 64)))
     
     def show(self):
         super(Window, self).show()
