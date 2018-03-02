@@ -1,6 +1,7 @@
 Scene:
 
 <FILENAME> string
+<VERSION> uint32
 <NUMBER_OF_ITEMS> uint32
 <ITEM_1>
 <ITEM_2>
@@ -43,6 +44,7 @@ Item:
 <OX> double
 <OY> double
 <INTENSITY> double
+<SPEED> double
 <BLENDING> uint8
 <OPACITY> double
 <TX> uint32

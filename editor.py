@@ -29,6 +29,8 @@ class RuminaEditor(QMainWindow):
         self.ui.spriteView.setDragMode(QGraphicsView.NoDrag)
         self.ui.mapView.setScene(self.ui.sceneGraphicsView.scene)
         self.ui.mapView.setInteractive(False)
+        
+        self.ui.pushButton.clicked.connect(lambda: self.scene.serialize('scene.ruminascene'))
                 
     def loadScene(self, scene):
         self.scene = scene
