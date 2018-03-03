@@ -35,6 +35,9 @@ class RuminaItem(RuminaGraphicsObject):
         self.setFlags(QGraphicsItem.ItemIsMovable | QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemIsFocusable)
         self.image = pixmap.toImage()
         
+    def __repr__(self):
+        return "<RuminaItem '%s' @ plane %d, pos %dx%d, size %dx%d, spritesheet pos %dx%d>" % (self.name, self.plane, self.pos().x(), self.pos().y(), self.image.width(), self.image.height(), self.spritesheetPos.x() if self.spritesheetPos else -1, self.spritesheetPos.y() if self.spritesheetPos else -1)
+        
     def setPlane(self, plane):
         self.plane = plane
         
@@ -45,7 +48,7 @@ class RuminaItem(RuminaGraphicsObject):
         self.zOffset = zOffset
 
     def setSource(self, source):
-        self.source = source
+        self.source = source.filename
         
     def remove(self):
         self.scene().removeItem(self)

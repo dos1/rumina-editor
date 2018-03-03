@@ -89,9 +89,9 @@ class rect_node:
 
     def clone(self):
         if (self.is_leaf()):
-            return rect_node(copy.copy(self.sprite), copy.copy(self.rect))
+            return rect_node(self.sprite, copy.copy(self.rect))
         else:
-            return rect_node(copy.copy(self.sprite), copy.copy(self.rect),\
+            return rect_node(self.sprite, copy.copy(self.rect),\
                             (self.children[0].clone(), self.children[1].clone()))
 
     def is_leaf(self):
@@ -152,7 +152,7 @@ class rect_node:
         if (self.is_leaf()):
             if (self.sprite):
                 pad = self.sprite.padding
-                img.paste(self.sprite.image, (self.rect.x + pad, self.rect.y + pad))
+                img.paste(self.sprite, (self.rect.x + pad, self.rect.y + pad))
         else:
             self.children[0].render(img)
             self.children[1].render(img)

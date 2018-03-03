@@ -11,3 +11,7 @@ class RuminaSpritesheet(QPixmap):
     def paste(self, item, pos):
         item.setSpritesheetPos(QPoint(pos[0], pos[1]))
         self.canvas.drawImage(pos[0], pos[1], item.image)
+        
+    def save(self, url):
+        self.canvas.end()
+        super(RuminaSpritesheet, self).save(url)

@@ -1,7 +1,10 @@
 Scene:
 
-<FILENAME> string
+RUMINA
 <VERSION> uint32
+<FILENAME> string
+<BACKGROUND> string
+<BG_DISTANCE> double
 <NUMBER_OF_ITEMS> uint32
 <ITEM_1>
 <ITEM_2>
@@ -11,11 +14,12 @@ Scene:
 
 String:
 
-<NUMBER_OF_BYTES> uint32
+<NUMBER_OF_BYTES> uint8
 <CHAR_1> uint8
 <CHAR_2> uint8
 <...>
 <CHAR_N> uint8
+\0 uint8
 
 character == utf-8 byte
 
@@ -32,10 +36,12 @@ Item:
 <Z> double
 <ZOFFSET> double
 <SCALE> double
-<SX> uint32
-<SY> uint32
+<TX> uint32
+<TY> uint32
 <SW> uint32
 <SH> uint32
+<SX> uint32
+<SY> uint32
 <PX> double
 <PY> double
 <RX> double
@@ -47,5 +53,3 @@ Item:
 <SPEED> double
 <BLENDING> uint8
 <OPACITY> double
-<TX> uint32
-<TY> uint32
