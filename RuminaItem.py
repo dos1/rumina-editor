@@ -12,7 +12,6 @@ class RuminaItem(RuminaGraphicsObject):
     zOffset = 0
     highlighted = False
     hidden = None
-    scale = 1
     px = 0.5
     py = 0.5
     rx = 0
@@ -23,7 +22,6 @@ class RuminaItem(RuminaGraphicsObject):
     intensity = 0
     speed = 0
     blending = 0
-    opacity = 1
     spritesheetPos = None
     sourcePos = None
     itemRemoved = pyqtSignal(RuminaGraphicsObject)
@@ -64,6 +62,11 @@ class RuminaItem(RuminaGraphicsObject):
         
     def setSourcePos(self, pos):
         self.sourcePos = pos
+        
+    def paint(self, painter, option, widget):
+        if self.blending == 1:
+            painter.setCompositionMode(QPainter.CompositionMode_Multiply)
+        super(RuminaItem, self).paint(painter, option, widget)
 
     # pypacker's interface
     def get_size(self):

@@ -3,19 +3,20 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from RuminaItem import RuminaItem
 from RuminaPlane import RuminaPlane
+from RuminaGraphicsObject import RuminaGraphicsObject
 from RuminaSpritesheet import RuminaSpritesheet
 from os import listdir
 from os.path import isfile, join
 import struct
 from pypacker import pack_images, sort_images_by_size
 
-class RuminaScene(object):
+class RuminaScene(QObject):
     
     bg = None
     planes = None
     scene = None
     items = None
-    
+    selectionChanged = pyqtSignal(RuminaGraphicsObject)
     
     class Deserializer(object):
         f = None
@@ -102,7 +103,7 @@ class RuminaScene(object):
             item.setZOffset(zOffset)
             item.setSpritesheetPos(QPointF(spritesheetX, spritesheetY))
             item.setSourcePos(QPoint(sourceX, sourceY))
-            item.scale = scale
+            item.setScale(scale)
             item.px = px
             item.py = py
             item.rx = rx
@@ -113,7 +114,7 @@ class RuminaScene(object):
             item.intensity = intensity
             item.speed = speed
             item.blending = blending
-            item.opacity = opacity
+            item.setOpacity(opacity)
             
             return item
         
@@ -159,7 +160,7 @@ class RuminaScene(object):
             self.writeDouble(item.pos().y())
             self.writeDouble(item.z)
             self.writeDouble(item.zOffset)
-            self.writeDouble(item.scale)
+            self.writeDouble(item.scale())
             self.writeUInt32(item.spritesheetPos.x())
             self.writeUInt32(item.spritesheetPos.y())
             self.writeUInt32(item.image.width())
@@ -176,12 +177,13 @@ class RuminaScene(object):
             self.writeDouble(item.intensity)
             self.writeDouble(item.speed)
             self.writeUInt8(item.blending)
-            self.writeDouble(item.opacity)
+            self.writeDouble(item.opacity())
             
         def write(self, val):
             self.f.write(val)
         
     def __init__(self, filename=None):
+        super(RuminaScene, self).__init__()
         self.bg = QPixmap.fromImage(QImage("bg.webp"))
         self.planes = [RuminaPlane(i) for i in range(4)]
         self.items = []
@@ -240,12 +242,23 @@ class RuminaScene(object):
         for item in self.items:
             self._renderItem(item)
             
+        scene.selectionChanged.connect(self._updateProperties)
+            
+    def _updateProperties(self):
+        sel = self.scene.selectedItems()
+        if len(sel) == 1:
+            self.selectionChanged.emit(sel[0])
+        else:
+            self.selectionChanged.emit(None)
+            
     def _renderItem(self, item):
         if not self.scene:
             return
         print(item)
         plane = self.planes[item.plane]
         item.setParentItem(plane)
+        item.xChanged.connect(self._updateProperties)
+        item.yChanged.connect(self._updateProperties)
         
     def _removeItem(self, item):
         self.items.remove(item)

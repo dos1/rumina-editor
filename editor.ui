@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>834</width>
+    <width>908</width>
     <height>675</height>
    </rect>
   </property>
@@ -51,7 +51,7 @@
       <property name="movable">
        <bool>false</bool>
       </property>
-      <widget class="QWidget" name="tabWidgetPage1" native="true">
+      <widget class="QWidget" name="tabWidgetPage1">
        <attribute name="title">
         <string>Edit item</string>
        </attribute>
@@ -110,18 +110,21 @@
                   </widget>
                  </item>
                  <item row="1" column="1">
-                  <widget class="QSlider" name="horizontalSlider">
+                  <widget class="QSlider" name="plane">
                    <property name="minimum">
-                    <number>1</number>
+                    <number>0</number>
                    </property>
                    <property name="maximum">
-                    <number>4</number>
+                    <number>3</number>
                    </property>
                    <property name="pageStep">
                     <number>1</number>
                    </property>
+                   <property name="value">
+                    <number>1</number>
+                   </property>
                    <property name="sliderPosition">
-                    <number>2</number>
+                    <number>1</number>
                    </property>
                    <property name="orientation">
                     <enum>Qt::Horizontal</enum>
@@ -200,6 +203,12 @@
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
+                     <property name="minimum">
+                      <double>-9999.000000000000000</double>
+                     </property>
+                     <property name="maximum">
+                      <double>9999.000000000000000</double>
+                     </property>
                     </widget>
                    </item>
                   </layout>
@@ -221,6 +230,12 @@
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
+                     <property name="minimum">
+                      <double>-9999.000000000000000</double>
+                     </property>
+                     <property name="maximum">
+                      <double>9999.000000000000000</double>
+                     </property>
                     </widget>
                    </item>
                   </layout>
@@ -241,6 +256,12 @@
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
+                     </property>
+                     <property name="minimum">
+                      <double>-9999.000000000000000</double>
+                     </property>
+                     <property name="maximum">
+                      <double>9999.000000000000000</double>
                      </property>
                     </widget>
                    </item>
@@ -323,7 +344,7 @@
                   </widget>
                  </item>
                  <item row="0" column="1">
-                  <widget class="QLabel" name="file">
+                  <widget class="QLabel" name="filename">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                      <horstretch>0</horstretch>
@@ -359,6 +380,9 @@
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
+                     <property name="maximum">
+                      <number>9999</number>
+                     </property>
                     </widget>
                    </item>
                    <item row="1" column="0">
@@ -375,6 +399,9 @@
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
+                     </property>
+                     <property name="maximum">
+                      <number>9999</number>
                      </property>
                     </widget>
                    </item>
@@ -397,6 +424,9 @@
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
+                     <property name="maximum">
+                      <number>9999</number>
+                     </property>
                     </widget>
                    </item>
                    <item row="0" column="0">
@@ -413,6 +443,9 @@
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
+                     </property>
+                     <property name="maximum">
+                      <number>9999</number>
                      </property>
                     </widget>
                    </item>
@@ -563,7 +596,11 @@
                       </widget>
                      </item>
                      <item>
-                      <widget class="QDoubleSpinBox" name="rx"/>
+                      <widget class="QDoubleSpinBox" name="rx">
+                       <property name="minimum">
+                        <double>-99.989999999999995</double>
+                       </property>
+                      </widget>
                      </item>
                     </layout>
                    </item>
@@ -577,7 +614,11 @@
                       </widget>
                      </item>
                      <item>
-                      <widget class="QDoubleSpinBox" name="ry"/>
+                      <widget class="QDoubleSpinBox" name="ry">
+                       <property name="minimum">
+                        <double>-99.989999999999995</double>
+                       </property>
+                      </widget>
                      </item>
                     </layout>
                    </item>
@@ -591,7 +632,11 @@
                       </widget>
                      </item>
                      <item>
-                      <widget class="QDoubleSpinBox" name="rz"/>
+                      <widget class="QDoubleSpinBox" name="rz">
+                       <property name="minimum">
+                        <double>-99.989999999999995</double>
+                       </property>
+                      </widget>
                      </item>
                     </layout>
                    </item>
@@ -708,6 +753,9 @@
                     <layout class="QHBoxLayout" name="horizontalLayout_22">
                      <item>
                       <widget class="QSlider" name="intensity">
+                       <property name="maximum">
+                        <number>100</number>
+                       </property>
                        <property name="orientation">
                         <enum>Qt::Horizontal</enum>
                        </property>
@@ -768,6 +816,11 @@
                      <string>default</string>
                     </property>
                    </item>
+                   <item>
+                    <property name="text">
+                     <string>multiply</string>
+                    </property>
+                   </item>
                   </widget>
                  </item>
                  <item row="1" column="1">
@@ -777,8 +830,11 @@
                      <property name="maximum">
                       <number>100</number>
                      </property>
+                     <property name="singleStep">
+                      <number>1</number>
+                     </property>
                      <property name="value">
-                      <number>100</number>
+                      <number>1</number>
                      </property>
                      <property name="orientation">
                       <enum>Qt::Horizontal</enum>
@@ -839,7 +895,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tabWidgetPage2" native="true">
+      <widget class="QWidget" name="tabWidgetPage2">
        <attribute name="title">
         <string>Add items</string>
        </attribute>
@@ -931,7 +987,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tabWidgetPage3" native="true">
+      <widget class="QWidget" name="tabWidgetPage3">
        <attribute name="title">
         <string>Console</string>
        </attribute>
@@ -1014,7 +1070,7 @@ font-family: monospace;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>834</width>
+     <width>908</width>
      <height>28</height>
     </rect>
    </property>
@@ -1083,17 +1139,17 @@ font-family: monospace;</string>
   </action>
   <action name="actionSave_as">
    <property name="text">
-    <string>Save as...</string>
+    <string>Save &amp;as...</string>
    </property>
   </action>
   <action name="actionClose">
    <property name="text">
-    <string>Close</string>
+    <string>&amp;Close</string>
    </property>
   </action>
   <action name="actionNew">
    <property name="text">
-    <string>New</string>
+    <string>&amp;New</string>
    </property>
   </action>
  </widget>
@@ -1112,7 +1168,7 @@ font-family: monospace;</string>
  <tabstops>
   <tabstop>sceneGraphicsView</tabstop>
   <tabstop>name</tabstop>
-  <tabstop>horizontalSlider</tabstop>
+  <tabstop>plane</tabstop>
   <tabstop>highlighted</tabstop>
   <tabstop>hidden</tabstop>
   <tabstop>x</tabstop>
