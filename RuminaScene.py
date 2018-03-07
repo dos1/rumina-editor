@@ -230,6 +230,19 @@ class RuminaScene(QObject):
             
             #print(filename, background, bg_distance)
 
+    def getNextItem(self, item):
+        idx = self.items.index(item)
+        idx = idx + 1
+        if idx == len(self.items):
+            idx = 0
+        return self.items[idx]
+    
+    def getPrevItem(self, item):
+        idx = self.items.index(item)
+        idx = idx - 1
+        if idx == -1:
+            idx = len(self.items) - 1
+        return self.items[idx]
     
     def render(self, scene):
         self.scene = scene

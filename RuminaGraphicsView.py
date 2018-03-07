@@ -11,6 +11,7 @@ class RuminaGraphicsView(QGraphicsView):
     selection = None
     _scale = 1
     _lastRb = None
+    keyPressed = pyqtSignal(QKeyEvent)
     
     def  __init__(self, parent=None, scene=None):
         super(QGraphicsView, self).__init__(parent=parent)
@@ -58,6 +59,10 @@ class RuminaGraphicsView(QGraphicsView):
 
     def resize(self):
         self.fitInView(self.scene.sceneRect(), Qt.KeepAspectRatio)
+
+    def keyPressEvent(self, event):
+        self.keyPressed.emit(event)
+        return super(RuminaGraphicsView, self).keyPressEvent(event)
 
     def wheelEvent(self, event):
         # Zoom in or out of the view.

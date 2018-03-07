@@ -34,6 +34,8 @@ class RuminaEditor(QMainWindow):
         self.ui.mapView.setScene(self.ui.sceneGraphicsView.scene)
         self.ui.mapView.setInteractive(False)
         
+        self.ui.sceneGraphicsView.keyPressed.connect(self.keyPressed)
+        
         self.ui.pushButton.clicked.connect(lambda: self.scene.serialize('scene.ruminascene'))
         
         controls = [self.ui.name, self.ui.plane, self.ui.highlighted, self.ui.hidden, self.ui.x, self.ui.y, self.ui.z, self.ui.scaleVal,
@@ -132,6 +134,18 @@ class RuminaEditor(QMainWindow):
         item.setScale(self.ui.scale.value() / 100)
         self.updateProperties(self.currentItem)
     
+    def keyPressed(self, event):
+        if event.key() == Qt.Key_PageUp:
+            if self.currentItem:
+                nextItem = self.scene.getNextItem(self.currentItem)
+                self.currentItem.setSelected(False)
+                nextItem.setSelected(True)
+        if event.key() == Qt.Key_PageDown:
+            if self.currentItem:
+                prevItem = self.scene.getPrevItem(self.currentItem)
+                self.currentItem.setSelected(False)
+                prevItem.setSelected(True)
+                
     def loadScene(self, scene):
         self.scene = scene
         scene.selectionChanged.connect(self.updateProperties)
