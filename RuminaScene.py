@@ -211,7 +211,7 @@ class RuminaScene(QObject):
             serializer.writeString('bg.webp') # background
             serializer.writeDouble(0) # bg_distance
             serializer.writeUInt32(len(self.items)) # number_of_items
-            for item in self.items: #TODO: sort by Z/drawing order
+            for item in self.items: #TODO: sort by ZValue/drawing order
                 serializer.writeItem(item)
         
     def deserialize(self, filename):
@@ -244,12 +244,21 @@ class RuminaScene(QObject):
             
         scene.selectionChanged.connect(self._updateProperties)
             
+            
+    def highlightPlane(self, nr):
+        for plane in self.planes:
+            plane.setActive(False)
+        if nr is not None:
+            self.planes[nr].setActive(True)
+        
     def _updateProperties(self):
         sel = self.scene.selectedItems()
         if len(sel) == 1:
             self.selectionChanged.emit(sel[0])
+            self.highlightPlane(sel[0].plane)
         else:
             self.selectionChanged.emit(None)
+            self.highlightPlane(None)
             
     def _renderItem(self, item):
         if not self.scene:
@@ -257,8 +266,10 @@ class RuminaScene(QObject):
         print(item)
         plane = self.planes[item.plane]
         item.setParentItem(plane)
+        item.planes = self.planes
         item.xChanged.connect(self._updateProperties)
         item.yChanged.connect(self._updateProperties)
+        item.parentChanged.connect(self._updateProperties)
         
     def _removeItem(self, item):
         self.items.remove(item)

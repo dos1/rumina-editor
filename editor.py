@@ -54,6 +54,7 @@ class RuminaEditor(QMainWindow):
         self.currentItem = None
         if not item:
             self.ui.tabWidgetPage1.setEnabled(False)
+            self.ui.sceneGraphicsView.clearSelection()
             return
         self.ui.tabWidgetPage1.setEnabled(True)
         self.ui.name.setText(item.name)
@@ -83,18 +84,20 @@ class RuminaEditor(QMainWindow):
         self.ui.opacityVal.setValue(item.opacity())
         self.ui.filename.setText(item.source)
         self.currentItem = item
+        self.ui.sceneGraphicsView.setSelection(item.x() + item.plane * 2400, item.y(), item.image.width(), item.image.height())
     
     def applyProperties(self):
         item = self.currentItem
         if not item:
             return
         item.name = self.ui.name.text()
-        item.setPlane(self.ui.plane.value())
         item.highlighted = self.ui.highlighted.isChecked()
         item.hidden = self.ui.hidden.isChecked()
         item.setX(self.ui.x.value())
         item.setY(self.ui.y.value())
         item.setZ(self.ui.z.value())
+        item.setPlane(self.ui.plane.value(), plane=self.scene.planes[self.ui.plane.value()])
+        self.scene.highlightPlane(item.plane)
         item.setScale(self.ui.scaleVal.value())
         # TODO: sourcepos, width, height
         item.px = self.ui.px.value()

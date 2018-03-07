@@ -36,8 +36,13 @@ class RuminaItem(RuminaGraphicsObject):
     def __repr__(self):
         return "<RuminaItem '%s' @ plane %d, pos %dx%d, size %dx%d, spritesheet pos %dx%d>" % (self.name, self.plane, self.pos().x(), self.pos().y(), self.image.width(), self.image.height(), self.spritesheetPos.x() if self.spritesheetPos else -1, self.spritesheetPos.y() if self.spritesheetPos else -1)
         
-    def setPlane(self, plane):
-        self.plane = plane
+    def setPlane(self, nr, plane = None):
+        if self.plane is not None:
+            offset = nr * 2400 - self.plane * 2400
+            self.setX(self.x() - offset)
+        self.plane = nr
+        if plane:
+            self.setParentItem(plane)
         
     def setZ(self, z):
         self.z = z
