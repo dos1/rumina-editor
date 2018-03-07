@@ -19,6 +19,7 @@ class RuminaEditor(QMainWindow):
     
     resized = pyqtSignal()
     currentItem = None
+    preview = None
     
     def __init__(self, parent=None):
         super(RuminaEditor, self).__init__(parent)
@@ -28,6 +29,8 @@ class RuminaEditor(QMainWindow):
         self.ui.tabWidget.currentChanged.connect(lambda x: self.ui.fileView.resize())
         self.ui.fileView.rubberBandChanged.connect(self.ui.fileView.setSelectionFromRubberBand)
         self.ui.spriteView.setDragMode(QGraphicsView.NoDrag)
+        self.preview = QGraphicsPixmapItem(QPixmap(1,1))
+        self.ui.spriteView.scene.addItem(self.preview)
         self.ui.mapView.setScene(self.ui.sceneGraphicsView.scene)
         self.ui.mapView.setInteractive(False)
         
@@ -55,6 +58,8 @@ class RuminaEditor(QMainWindow):
         if not item:
             self.ui.tabWidgetPage1.setEnabled(False)
             self.ui.sceneGraphicsView.clearSelection()
+            self.preview.setVisible(False)
+            self.ui.spriteView.scene.setSceneRect(QRectF(0, 0, 0, 0))
             return
         self.ui.tabWidgetPage1.setEnabled(True)
         self.ui.name.setText(item.name)
@@ -83,6 +88,11 @@ class RuminaEditor(QMainWindow):
         self.ui.opacity.setValue(item.opacity()*100)
         self.ui.opacityVal.setValue(item.opacity())
         self.ui.filename.setText(item.source)
+        self.preview.setPixmap(item.item.pixmap())
+        self.preview.setVisible(True)
+        self.ui.spriteView.scene.setSceneRect(QRectF(QPointF(0,0), QSizeF(item.item.pixmap().size())))
+        self.ui.spriteView.fitInView(self.ui.spriteView.scene.sceneRect(), Qt.KeepAspectRatio)
+
         self.currentItem = item
         self.ui.sceneGraphicsView.setSelection(item.x() + item.plane * 2400, item.y(), item.image.width(), item.image.height())
     
