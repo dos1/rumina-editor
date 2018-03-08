@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>908</width>
+    <width>965</width>
     <height>675</height>
    </rect>
   </property>
@@ -876,7 +876,7 @@
            <widget class="RuminaGraphicsView" name="spriteView"/>
           </item>
           <item>
-           <widget class="QGraphicsView" name="mapView">
+           <widget class="RuminaMapView" name="mapView">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
               <horstretch>0</horstretch>
@@ -1070,7 +1070,7 @@ font-family: monospace;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>908</width>
+     <width>965</width>
      <height>28</height>
     </rect>
    </property>
@@ -1163,6 +1163,11 @@ font-family: monospace;</string>
    <class>RuminaGraphicsView</class>
    <extends>QGraphicsView</extends>
    <header>RuminaGraphicsView.h</header>
+  </customwidget>
+  <customwidget>
+   <class>RuminaMapView</class>
+   <extends>QGraphicsView</extends>
+   <header>RuminaMapView.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

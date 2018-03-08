@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(908, 675)
+        MainWindow.resize(965, 675)
         MainWindow.setDocumentMode(True)
         MainWindow.setUnifiedTitleAndToolBarOnMac(True)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -462,7 +462,7 @@ class Ui_MainWindow(object):
         self.spriteView = RuminaGraphicsView(self.tabWidgetPage1)
         self.spriteView.setObjectName("spriteView")
         self.horizontalLayout.addWidget(self.spriteView)
-        self.mapView = QtWidgets.QGraphicsView(self.tabWidgetPage1)
+        self.mapView = RuminaMapView(self.tabWidgetPage1)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -555,7 +555,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addLayout(self.horizontalLayout_8)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 908, 28))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 965, 28))
         self.menubar.setObjectName("menubar")
         self.menuPlik = QtWidgets.QMenu(self.menubar)
         self.menuPlik.setObjectName("menuPlik")
@@ -701,4 +701,5 @@ class Ui_MainWindow(object):
         self.actionNew.setText(_translate("MainWindow", "&New"))
 
 from RuminaGraphicsView import RuminaGraphicsView
+from RuminaMapView import RuminaMapView
 from RuminaTabBar import RuminaTabBar

@@ -8,6 +8,7 @@ class RuminaItem(RuminaGraphicsObject):
     image = None
     source = None
     plane = None
+    planes = None
     z = 0
     zOffset = 0
     highlighted = False
@@ -25,6 +26,7 @@ class RuminaItem(RuminaGraphicsObject):
     spritesheetPos = None
     sourcePos = None
     itemRemoved = pyqtSignal(RuminaGraphicsObject)
+    zChanged = pyqtSignal(float)
     padding = 10
     name = None
     
@@ -36,16 +38,17 @@ class RuminaItem(RuminaGraphicsObject):
     def __repr__(self):
         return "<RuminaItem '%s' @ plane %d, pos %dx%d, size %dx%d, spritesheet pos %dx%d>" % (self.name, self.plane, self.pos().x(), self.pos().y(), self.image.width(), self.image.height(), self.spritesheetPos.x() if self.spritesheetPos else -1, self.spritesheetPos.y() if self.spritesheetPos else -1)
         
-    def setPlane(self, nr, plane = None):
+    def setPlane(self, plane):
         if self.plane is not None:
-            offset = nr * 2400 - self.plane * 2400
+            offset = plane * 2400 - self.plane * 2400
             self.setX(self.x() - offset)
-        self.plane = nr
-        if plane:
-            self.setParentItem(plane)
+        self.plane = plane
+        if self.planes:
+            self.setParentItem(self.planes[plane])
         
     def setZ(self, z):
         self.z = z
+        self.zChanged.emit(z)
         
     def setZOffset(self, zOffset):
         self.zOffset = zOffset
@@ -60,6 +63,28 @@ class RuminaItem(RuminaGraphicsObject):
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Delete:
             self.remove()
+        if event.key() == Qt.Key_W:
+            self.setY(self.y() - 1)
+        if event.key() == Qt.Key_A:
+            self.setX(self.x() - 1)
+        if event.key() == Qt.Key_S:
+            self.setY(self.y() + 1)
+        if event.key() == Qt.Key_D:
+            self.setX(self.x() + 1)
+        if event.key() == Qt.Key_Q:
+            self.setZ(self.z - 10)
+        if event.key() == Qt.Key_E:
+            self.setZ(self.z + 10)
+        if event.key() == Qt.Key_Z:
+            newPlane = self.plane - 1
+            if newPlane == -1:
+                newPlane = 3
+            self.setPlane(newPlane)
+        if event.key() == Qt.Key_X:
+            newPlane = self.plane + 1
+            if newPlane == 4:
+                newPlane = 0
+            self.setPlane(newPlane)
         return super(RuminaItem, self).keyPressEvent(event)
     
     def setSpritesheetPos(self, pos):

@@ -140,11 +140,13 @@ class RuminaEditor(QMainWindow):
                 nextItem = self.scene.getNextItem(self.currentItem)
                 self.currentItem.setSelected(False)
                 nextItem.setSelected(True)
+                nextItem.setFocus()
         if event.key() == Qt.Key_PageDown:
             if self.currentItem:
                 prevItem = self.scene.getPrevItem(self.currentItem)
                 self.currentItem.setSelected(False)
                 prevItem.setSelected(True)
+                prevItem.setFocus()
                 
     def loadScene(self, scene):
         self.scene = scene
@@ -157,6 +159,7 @@ class RuminaEditor(QMainWindow):
         self.resized.emit()
         self.ui.sceneGraphicsView.resize()
         self.ui.fileView.resize()
+        self.ui.mapView.resize()
         return super(RuminaEditor, self).resizeEvent(event)
     
     def fileChanged(self, filename):
@@ -173,6 +176,7 @@ class RuminaEditor(QMainWindow):
         super(RuminaEditor, self).show()
         self.ui.sceneGraphicsView.resize()
         self.ui.fileView.resize()
+        self.ui.mapView.resize()
         
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
