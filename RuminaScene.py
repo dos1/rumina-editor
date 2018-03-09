@@ -276,7 +276,7 @@ class RuminaScene(QObject):
     def _renderItem(self, item):
         if not self.scene:
             return
-        print(item)
+        #print(item)
         plane = self.planes[item.plane]
         item.setParentItem(plane)
         item.planes = self.planes

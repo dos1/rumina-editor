@@ -94,9 +94,10 @@ class RuminaEditor(QMainWindow):
         self.preview.setVisible(True)
         self.ui.spriteView.scene.setSceneRect(QRectF(QPointF(0,0), QSizeF(item.item.pixmap().size())))
         self.ui.spriteView.fitInView(self.ui.spriteView.scene.sceneRect(), Qt.KeepAspectRatio)
-
+        rect = item.mapToScene(item.boundingRect()).boundingRect()
+        self.ui.sceneGraphicsView.setSelection(rect.x(), rect.y(), rect.width(), rect.height())
         self.currentItem = item
-        self.ui.sceneGraphicsView.setSelection(item.x() + item.plane * 2400, item.y(), item.image.width(), item.image.height())
+
     
     def applyProperties(self):
         item = self.currentItem
@@ -108,7 +109,7 @@ class RuminaEditor(QMainWindow):
         item.setX(self.ui.x.value())
         item.setY(self.ui.y.value())
         item.setZ(self.ui.z.value())
-        item.setPlane(self.ui.plane.value(), plane=self.scene.planes[self.ui.plane.value()])
+        item.setPlane(self.ui.plane.value())
         self.scene.highlightPlane(item.plane)
         item.setScale(self.ui.scaleVal.value())
         # TODO: sourcepos, width, height
