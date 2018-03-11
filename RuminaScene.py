@@ -104,11 +104,8 @@ class RuminaScene(QObject):
             item.setSpritesheetPos(QPointF(spritesheetX, spritesheetY))
             item.setSourcePos(QPoint(sourceX, sourceY))
             item.setScale(scale)
-            item.px = px
-            item.py = py
-            item.rx = rx
-            item.ry = ry
-            item.rz = rz
+            item.setPivot(px, py)
+            item.setRotation(rx, ry, rz)
             item.ox = ox
             item.oy = oy
             item.intensity = intensity
@@ -283,6 +280,7 @@ class RuminaScene(QObject):
         item.xChanged.connect(self._updateProperties)
         item.yChanged.connect(self._updateProperties)
         item.zChanged.connect(self._updateProperties)
+        item.centered.connect(self._updateProperties)
         item.parentChanged.connect(self._updateProperties)
         
     def _removeItem(self, item):

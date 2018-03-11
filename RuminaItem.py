@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from RuminaGraphicsObject import RuminaGraphicsObject
+import math
 
 class RuminaItem(RuminaGraphicsObject):
     
@@ -27,6 +28,7 @@ class RuminaItem(RuminaGraphicsObject):
     sourcePos = None
     itemRemoved = pyqtSignal(RuminaGraphicsObject)
     zChanged = pyqtSignal(float)
+    centered = pyqtSignal()
     padding = 10
     name = None
     
@@ -85,13 +87,31 @@ class RuminaItem(RuminaGraphicsObject):
             if newPlane == 4:
                 newPlane = 0
             self.setPlane(newPlane)
+        if event.key() == Qt.Key_C:
+            self.lookAtCenter()
         return super(RuminaItem, self).keyPressEvent(event)
+    
+    def setRotation(self, x, y, z):
+        self.rx = x
+        self.ry = y
+        self.rz = z
+        super(RuminaItem, self).setRotation(z)
+        
+    def setPivot(self, x, y):
+        self.px = x
+        self.py = y
+        self.setTransformOriginPoint(x * self.image.width(), y * self.image.height())
     
     def setSpritesheetPos(self, pos):
         self.spritesheetPos = pos
         
     def setSourcePos(self, pos):
         self.sourcePos = pos
+        
+    def lookAtCenter(self):
+        angle = math.atan2(-(self.x() + self.image.width() * self.px - 2400 / 2), -(self.z - 2400))
+        self.setRotation(self.rx, angle / math.pi * 180, self.rz)
+        self.centered.emit()
         
     def paint(self, painter, option, widget):
         if self.blending == 1:

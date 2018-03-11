@@ -20,6 +20,7 @@ class RuminaEditor(QMainWindow):
     resized = pyqtSignal()
     currentItem = None
     preview = None
+    uilock = False
     
     def __init__(self, parent=None):
         super(RuminaEditor, self).__init__(parent)
@@ -31,12 +32,12 @@ class RuminaEditor(QMainWindow):
         self.ui.spriteView.setDragMode(QGraphicsView.NoDrag)
         self.preview = QGraphicsPixmapItem(QPixmap(1,1))
         self.ui.spriteView.scene.addItem(self.preview)
-        self.ui.mapView.setScene(self.ui.sceneGraphicsView.scene)
-        self.ui.mapView.setInteractive(False)
+        self.ui.mapView.setDataScene(self.ui.sceneGraphicsView.scene)
         
         self.ui.sceneGraphicsView.keyPressed.connect(self.keyPressed)
         
         self.ui.pushButton.clicked.connect(lambda: self.scene.serialize('scene.ruminascene'))
+        self.ui.center.clicked.connect(self.lookAtCenter)
         
         controls = [self.ui.name, self.ui.plane, self.ui.highlighted, self.ui.hidden, self.ui.x, self.ui.y, self.ui.z, self.ui.scaleVal,
                     self.ui.sx, self.ui.sy, self.ui.sw, self.ui.sh, self.ui.px, self.ui.py, self.ui.rx, self.ui.ry, self.ui.rz, self.ui.ox, self.ui.oy,
@@ -55,13 +56,24 @@ class RuminaEditor(QMainWindow):
         for slider in sliders:
             slider.valueChanged.connect(self.applySliders)
                 
+    def lookAtCenter(self):
+        item = self.currentItem
+        if not item:
+            return
+        item.lookAtCenter()
+                
     def updateProperties(self, item):
+        print("updating UI...")
+        if self.uilock:
+            print("not updating due to lock")
+            return
         self.currentItem = None
         if not item:
             self.ui.tabWidgetPage1.setEnabled(False)
             self.ui.sceneGraphicsView.clearSelection()
             self.preview.setVisible(False)
             self.ui.spriteView.scene.setSceneRect(QRectF(0, 0, 0, 0))
+            print("UI disabled")
             return
         self.ui.tabWidgetPage1.setEnabled(True)
         self.ui.name.setText(item.name)
@@ -96,13 +108,17 @@ class RuminaEditor(QMainWindow):
         self.ui.spriteView.fitInView(self.ui.spriteView.scene.sceneRect(), Qt.KeepAspectRatio)
         rect = item.mapToScene(item.boundingRect()).boundingRect()
         self.ui.sceneGraphicsView.setSelection(rect.x(), rect.y(), rect.width(), rect.height())
-        self.currentItem = item
 
+        print("updated UI with values from item", item)
+        self.currentItem = item
     
     def applyProperties(self):
+        print("updating item...")
         item = self.currentItem
         if not item:
+            print("nothing to update now")
             return
+        self.uilock = True
         item.name = self.ui.name.text()
         item.highlighted = self.ui.highlighted.isChecked()
         item.hidden = self.ui.hidden.isChecked()
@@ -113,26 +129,31 @@ class RuminaEditor(QMainWindow):
         self.scene.highlightPlane(item.plane)
         item.setScale(self.ui.scaleVal.value())
         # TODO: sourcepos, width, height
-        item.px = self.ui.px.value()
-        item.py = self.ui.py.value()
-        item.rx = self.ui.rx.value()
-        item.ry = self.ui.ry.value()
-        item.rz = self.ui.rz.value()
+        item.setPivot(self.ui.px.value(), self.ui.py.value())
+        item.setRotation(self.ui.rx.value(), self.ui.ry.value(), self.ui.rz.value())
         item.ox = self.ui.ox.value()
         item.oy = self.ui.oy.value()
         item.intensity = self.ui.intensityVal.value()
         item.blending = self.ui.blendmode.currentIndex()
         item.setOpacity(self.ui.opacityVal.value())
+        self.uilock = False
         
+        print("updated item", item, "with values from UI")
         self.updateProperties(self.currentItem)
         
     def applySliders(self):
+        print("applying sliders...")
         item = self.currentItem
         if not item:
+            print("nothing to apply now")
             return
+        self.uilock = True
         item.intensity = self.ui.intensity.value() / 100
         item.setOpacity(self.ui.opacity.value() / 100)
         item.setScale(self.ui.scale.value() / 100)
+        
+        self.uilock = False
+        print("updated item", item, "with values from sliders")
         self.updateProperties(self.currentItem)
     
     def keyPressed(self, event):
