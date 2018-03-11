@@ -13,7 +13,7 @@ class RuminaMapView(QGraphicsView):
     matrix = None
     size = 1024
         
-    # TODO: per-item matrix (plane, rotation); change to item-per-item representation, so they can be mouse-selectable
+    # TODO: change to item-per-item representation, so they can be mouse-selectable
         
     def  __init__(self, parent=None, scene=None):
         super(QGraphicsView, self).__init__(parent=parent)
@@ -34,9 +34,14 @@ class RuminaMapView(QGraphicsView):
         painter = QPainter(pixmap)
         painter.setPen(QPen(QColor("gray"), 5))
         painter.drawArc(QRect(0, 0, self.size, self.size), 0, 5760);
-        
+
+        currentItem = None
+        for item in self.dataScene.items():
+            if item.isSelected():
+                currentItem = item
+                break
+
         painter.setPen(QPen(QColor("transparent")))
-        painter.setBrush(QBrush(QColor(0, 0, 255, 16)))
         for plane in range(4):
             planeMatrix = QMatrix4x4()
             if plane == 1:
@@ -55,12 +60,22 @@ class RuminaMapView(QGraphicsView):
             vertices.append(QVector3D(2400/2 + 2*1920/2, 0, -900))
             mapped = [ self.matrix.map(planeMatrix.map(vertex)) for vertex in vertices ]
             flattened = [ QPointF(vec[0], vec[1]) for vec in mapped ]
+            if currentItem and plane == currentItem.plane:
+                painter.setBrush(QBrush(QColor(0, 0, 255, 32)))
+            else:
+                painter.setBrush(QBrush(QColor(0, 0, 255, 16)))
             painter.drawPolygon(QPolygonF(flattened))
         
+        beforeCurrent = True
         for item in self.dataScene.items():
             if not isinstance(item, RuminaItem):
                 continue
-            painter.setPen(QPen(QColor("red" if item.isSelected() else "black"), 10))
+            color = "black"
+            if beforeCurrent:
+                color = "gray"
+            if item.isSelected():
+                beforeCurrent = False
+            painter.setPen(QPen(QColor("red" if item.isSelected() else color), 10))
             painter.setBrush(QBrush(QColor(255 if item.isSelected() else 0, 0, 0, 32)))
             polygon = item.mapToScene(item.boundingRect())
             #polygon = QPolygonF(QRectF(2400 * item.plane, 0, 1920*1.25, 1080*1.25))
