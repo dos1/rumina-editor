@@ -28,7 +28,7 @@ class RuminaItem(RuminaGraphicsObject):
     sourcePos = None
     itemRemoved = pyqtSignal(RuminaGraphicsObject)
     zChanged = pyqtSignal(float)
-    centered = pyqtSignal()
+    rotationChanged = pyqtSignal()
     padding = 10
     name = None
     
@@ -66,17 +66,17 @@ class RuminaItem(RuminaGraphicsObject):
         if event.key() == Qt.Key_Delete:
             self.remove()
         if event.key() == Qt.Key_W:
-            self.setY(self.y() - 1)
+            self.setY(self.y() - (10 if (event.modifiers() & Qt.ShiftModifier) else 1))
         if event.key() == Qt.Key_A:
-            self.setX(self.x() - 1)
+            self.setX(self.x() - (10 if (event.modifiers() & Qt.ShiftModifier) else 1))
         if event.key() == Qt.Key_S:
-            self.setY(self.y() + 1)
+            self.setY(self.y() + (10 if (event.modifiers() & Qt.ShiftModifier) else 1))
         if event.key() == Qt.Key_D:
-            self.setX(self.x() + 1)
+            self.setX(self.x() + (10 if (event.modifiers() & Qt.ShiftModifier) else 1))
         if event.key() == Qt.Key_Q:
-            self.setZ(self.z - 10)
+            self.setZ(self.z - (10 if (event.modifiers() & Qt.ShiftModifier) else 1))
         if event.key() == Qt.Key_E:
-            self.setZ(self.z + 10)
+            self.setZ(self.z + (10 if (event.modifiers() & Qt.ShiftModifier) else 1))
         if event.key() == Qt.Key_Z:
             newPlane = self.plane - 1
             if newPlane == -1:
@@ -89,14 +89,22 @@ class RuminaItem(RuminaGraphicsObject):
             self.setPlane(newPlane)
         if event.key() == Qt.Key_C:
             self.lookAtCenter()
+        if event.key() == Qt.Key_R:
+            self.setRotation(self.rx, self.ry - (10 if (event.modifiers() & Qt.ShiftModifier) else 1), self.rz)
+        if event.key() == Qt.Key_F:
+            self.setRotation(self.rx, self.ry + (10 if (event.modifiers() & Qt.ShiftModifier) else 1), self.rz)
+        if event.key() == Qt.Key_V:
+            self.setRotation(self.rx, 0, self.rz)
         return super(RuminaItem, self).keyPressEvent(event)
     
     def setRotation(self, x, y, z):
+        # TODO: clamp to -360;360
         self.rx = x
         self.ry = y
         self.rz = z
         super(RuminaItem, self).setRotation(z)
-        
+        self.rotationChanged.emit()
+
     def setPivot(self, x, y):
         self.px = x
         self.py = y
@@ -111,7 +119,7 @@ class RuminaItem(RuminaGraphicsObject):
     def lookAtCenter(self):
         angle = math.atan2(-(self.x() + self.image.width() * self.px - 2400 / 2), -(self.z - 2400))
         self.setRotation(self.rx, angle / math.pi * 180, self.rz)
-        self.centered.emit()
+        self.rotationChanged.emit()
         
     def paint(self, painter, option, widget):
         if self.blending == 1:

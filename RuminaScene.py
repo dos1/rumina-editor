@@ -280,7 +280,7 @@ class RuminaScene(QObject):
         item.xChanged.connect(self._updateProperties)
         item.yChanged.connect(self._updateProperties)
         item.zChanged.connect(self._updateProperties)
-        item.centered.connect(self._updateProperties)
+        item.rotationChanged.connect(self._updateProperties)
         item.parentChanged.connect(self._updateProperties)
         
     def _removeItem(self, item):

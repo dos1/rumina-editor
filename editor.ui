@@ -598,7 +598,10 @@
                      <item>
                       <widget class="QDoubleSpinBox" name="rx">
                        <property name="minimum">
-                        <double>-99.989999999999995</double>
+                        <double>-360.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>360.000000000000000</double>
                        </property>
                       </widget>
                      </item>
@@ -616,7 +619,10 @@
                      <item>
                       <widget class="QDoubleSpinBox" name="ry">
                        <property name="minimum">
-                        <double>-99.989999999999995</double>
+                        <double>-360.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>360.000000000000000</double>
                        </property>
                       </widget>
                      </item>
@@ -634,7 +640,10 @@
                      <item>
                       <widget class="QDoubleSpinBox" name="rz">
                        <property name="minimum">
-                        <double>-99.989999999999995</double>
+                        <double>-360.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>360.000000000000000</double>
                        </property>
                       </widget>
                      </item>

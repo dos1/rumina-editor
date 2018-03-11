@@ -34,6 +34,29 @@ class RuminaMapView(QGraphicsView):
         painter = QPainter(pixmap)
         painter.setPen(QPen(QColor("gray"), 5))
         painter.drawArc(QRect(0, 0, self.size, self.size), 0, 5760);
+        
+        painter.setPen(QPen(QColor("transparent")))
+        painter.setBrush(QBrush(QColor(0, 0, 255, 16)))
+        for plane in range(4):
+            planeMatrix = QMatrix4x4()
+            if plane == 1:
+                planeMatrix.translate(2400, 0, 0)
+                planeMatrix.rotate(-90, QVector3D(0, 1, 0))
+            elif plane == 2:
+                planeMatrix.translate(2400, 0, 2400)
+                planeMatrix.rotate(-180, QVector3D(0, 1, 0))
+            elif plane == 3:
+                planeMatrix.translate(0, 0, 2400)
+                planeMatrix.rotate(90, QVector3D(0, 1, 0))
+                
+            vertices = []
+            vertices.append(QVector3D(2400/2, 0, 900))
+            vertices.append(QVector3D(2400/2 - 2*1920/2, 0, -900))
+            vertices.append(QVector3D(2400/2 + 2*1920/2, 0, -900))
+            mapped = [ self.matrix.map(planeMatrix.map(vertex)) for vertex in vertices ]
+            flattened = [ QPointF(vec[0], vec[1]) for vec in mapped ]
+            painter.drawPolygon(QPolygonF(flattened))
+        
         for item in self.dataScene.items():
             if not isinstance(item, RuminaItem):
                 continue
@@ -43,6 +66,7 @@ class RuminaMapView(QGraphicsView):
             #polygon = QPolygonF(QRectF(2400 * item.plane, 0, 1920*1.25, 1080*1.25))
             #print("polygon", item)
             planeMatrix = QMatrix4x4()
+            
             if item.plane == 1:
                 planeMatrix.translate(2400, 0, 0)
                 planeMatrix.rotate(-90, QVector3D(0, 1, 0))
@@ -53,18 +77,18 @@ class RuminaMapView(QGraphicsView):
                 planeMatrix.translate(0, 0, 2400)
                 planeMatrix.rotate(90, QVector3D(0, 1, 0))
                 
-            planeMatrix.translate((item.x() + item.image.width() * item.px * item.scale()), (item.y() + item.image.height() * item.py * item.scale()), item.z) 
+            # z-scale adjustment
+            factor = 1.0 - (item.z / (2400 / 2.0 - 2400 / 8.0 - 0.01))
+            planeMatrix.translate(2400 / 2, 1350 / 2, 0)
+            planeMatrix.scale(factor, factor, 1)
+            planeMatrix.translate(-2400 / 2, 1350 / 2, 0)                
+                
+            planeMatrix.translate((item.x() + item.image.width() * item.px), (item.y() + item.image.height() * item.py), item.z) 
             planeMatrix.rotate(item.ry, QVector3D(0, 1, 0))
             planeMatrix.rotate(item.rx, QVector3D(1, 0, 0))
             #planeMatrix.rotate(item.rz, QVector3D(0, 0, 1)) # already taken care by QGraphicsView
-            planeMatrix.translate(-(item.x() + item.image.width() * item.px * item.scale()), -(item.y() + item.image.height() * item.py * item.scale()), -item.z) 
-            
-            # z-scale adjustment; disabled because breaks rotation for some reason
-            #factor = 1.0 - (item.z / (2400 / 2.0 - 2400 / 8.0 - 0.01))
-            #planeMatrix.translate(2400 / 2, 1350 / 2, 0)
-            #planeMatrix.scale(factor, factor, 1)
-            #planeMatrix.translate(-2400 / 2, 1350 / 2, 0)
-            
+            planeMatrix.translate(-(item.x() + item.image.width() * item.px), -(item.y() + item.image.height() * item.py), -item.z) 
+                        
             planeMatrix.translate(-2400*item.plane, 0, 0)
                 
             for i in range(polygon.size()):
