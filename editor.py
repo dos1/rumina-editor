@@ -21,6 +21,8 @@ class RuminaEditor(QMainWindow):
     currentItem = None
     preview = None
     uilock = False
+    pivot = None
+    swingOrigin = None
     
     def __init__(self, parent=None):
         super(RuminaEditor, self).__init__(parent)
@@ -30,8 +32,13 @@ class RuminaEditor(QMainWindow):
         self.ui.tabWidget.currentChanged.connect(lambda x: self.ui.fileView.resize())
         self.ui.fileView.rubberBandChanged.connect(self.ui.fileView.setSelectionFromRubberBand)
         self.ui.spriteView.setDragMode(QGraphicsView.NoDrag)
-        self.preview = QGraphicsPixmapItem(QPixmap(1,1))
-        self.ui.spriteView.scene.addItem(self.preview)
+        self.preview = self.ui.spriteView.scene.addPixmap(QPixmap(1,1))
+        self.pivot = self.ui.spriteView.scene.addRect(QRectF(0, 0, 10, 10))
+        self.swingOrigin = self.ui.spriteView.scene.addRect(QRectF(0, 0, 8, 8))
+        self.pivot.setPen(QPen(QColor("red")))
+        self.pivot.setBrush(QBrush(QColor(255, 0, 0, 32)))
+        self.swingOrigin.setPen(QPen(QColor("orange")))
+        self.swingOrigin.setBrush(QBrush(QColor(255, 128, 0, 32)))
         self.ui.mapView.setDataScene(self.ui.sceneGraphicsView.scene)
         
         self.ui.sceneGraphicsView.keyPressed.connect(self.keyPressed)
@@ -72,6 +79,8 @@ class RuminaEditor(QMainWindow):
             self.ui.tabWidgetPage1.setEnabled(False)
             self.ui.sceneGraphicsView.clearSelection()
             self.preview.setVisible(False)
+            self.pivot.setVisible(False)
+            self.swingOrigin.setVisible(False)
             self.ui.spriteView.scene.setSceneRect(QRectF(0, 0, 0, 0))
             print("UI disabled")
             return
@@ -104,10 +113,14 @@ class RuminaEditor(QMainWindow):
         self.ui.filename.setText(item.source)
         self.preview.setPixmap(item.item.pixmap())
         self.preview.setVisible(True)
+        self.pivot.setVisible(True)
+        self.swingOrigin.setVisible(True)
         self.ui.spriteView.scene.setSceneRect(QRectF(QPointF(0,0), QSizeF(item.item.pixmap().size())))
         self.ui.spriteView.fitInView(self.ui.spriteView.scene.sceneRect(), Qt.KeepAspectRatio)
         rect = item.mapToScene(item.boundingRect()).boundingRect()
         self.ui.sceneGraphicsView.setSelection(rect.x(), rect.y(), rect.width(), rect.height())
+        self.pivot.setPos(item.px * item.image.width() - 5, item.py * item.image.height() - 5)
+        self.swingOrigin.setPos(item.ox * item.image.width() - 4, item.oy * item.image.height() - 4)
 
         print("updated UI with values from item", item)
         self.currentItem = item

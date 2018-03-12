@@ -14,6 +14,7 @@ class RuminaMapView(QGraphicsView):
     size = 1024
         
     # TODO: change to item-per-item representation, so they can be mouse-selectable
+    # TODO: item order is WRONG!!!
         
     def  __init__(self, parent=None, scene=None):
         super(QGraphicsView, self).__init__(parent=parent)

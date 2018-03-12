@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>965</width>
+    <width>986</width>
     <height>675</height>
    </rect>
   </property>
@@ -518,8 +518,11 @@
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
+                       <property name="minimum">
+                        <double>-99.000000000000000</double>
+                       </property>
                        <property name="maximum">
-                        <double>1.000000000000000</double>
+                        <double>99.000000000000000</double>
                        </property>
                        <property name="singleStep">
                         <double>0.050000000000000</double>
@@ -548,8 +551,11 @@
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
+                       <property name="minimum">
+                        <double>-99.000000000000000</double>
+                       </property>
                        <property name="maximum">
-                        <double>1.000000000000000</double>
+                        <double>99.000000000000000</double>
                        </property>
                        <property name="singleStep">
                         <double>0.050000000000000</double>
@@ -704,8 +710,11 @@
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
+                       <property name="minimum">
+                        <double>-99.000000000000000</double>
+                       </property>
                        <property name="maximum">
-                        <double>1.000000000000000</double>
+                        <double>99.000000000000000</double>
                        </property>
                        <property name="singleStep">
                         <double>0.050000000000000</double>
@@ -734,8 +743,11 @@
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
+                       <property name="minimum">
+                        <double>-99.000000000000000</double>
+                       </property>
                        <property name="maximum">
-                        <double>1.000000000000000</double>
+                        <double>99.000000000000000</double>
                        </property>
                        <property name="singleStep">
                         <double>0.050000000000000</double>
@@ -1079,7 +1091,7 @@ font-family: monospace;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>965</width>
+     <width>986</width>
      <height>28</height>
     </rect>
    </property>
