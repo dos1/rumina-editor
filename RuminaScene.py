@@ -45,19 +45,19 @@ class RuminaScene(QObject):
             return val
             
         def readUInt8(self):
-            (val,) = self.unpack('B')
+            (val,) = self.unpack('<B')
             return val
 
         def readUInt32(self):
-            (val,) = self.unpack('I')
+            (val,) = self.unpack('<I')
             return val
 
         def readBool(self):
-            (val,) = self.unpack('?')
+            (val,) = self.unpack('<?')
             return val
 
         def readDouble(self):
-            (val,) = self.unpack('d')
+            (val,) = self.unpack('<d')
             return val
         
         def setSpritesheet(self, filename):
@@ -136,16 +136,16 @@ class RuminaScene(QObject):
             self.write(bytes([0]))
             
         def writeUInt32(self, val):
-            self.write(struct.pack('I', val))
+            self.write(struct.pack('<I', val))
             
         def writeUInt8(self, val):
-            self.write(struct.pack('B', val))
+            self.write(struct.pack('<B', val))
             
         def writeBool(self, val):
-            self.write(struct.pack('?', val))
+            self.write(struct.pack('<?', val))
             
         def writeDouble(self, val):
-            self.write(struct.pack('d', val))
+            self.write(struct.pack('<d', val))
             
         def writeItem(self, item):
             self.writeString(item.name)
