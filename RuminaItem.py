@@ -12,7 +12,7 @@ class RuminaItem(RuminaGraphicsObject):
     planes = None
     z = 0
     zOffset = 0
-    highlighted = False
+    curved = False
     hidden = None
     px = 0.5
     py = 0.5
@@ -63,6 +63,8 @@ class RuminaItem(RuminaGraphicsObject):
         self.itemRemoved.emit(self)
         
     def keyPressEvent(self, event):
+        if event.modifiers() & Qt.ControlModifier:
+            return super(RuminaItem, self).keyPressEvent(event)
         if event.key() == Qt.Key_Delete:
             self.remove()
         if event.key() == Qt.Key_W:

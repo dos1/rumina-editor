@@ -12,6 +12,7 @@ class RuminaMapView(QGraphicsView):
     dataScene = None
     matrix = None
     size = 1024
+    keyPressed = pyqtSignal(QKeyEvent)
         
     # TODO: change to item-per-item representation, so they can be mouse-selectable
     # TODO: item order is WRONG!!!
@@ -125,3 +126,8 @@ class RuminaMapView(QGraphicsView):
     def resize(self):
         if self.scene():
             self.fitInView(QRectF(-self.size/2, -self.size/2, self.size, self.size), Qt.KeepAspectRatio)
+
+    def keyPressEvent(self, event):
+        self.keyPressed.emit(event)
+        return super(RuminaMapView, self).keyPressEvent(event)
+
