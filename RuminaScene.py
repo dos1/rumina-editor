@@ -67,7 +67,7 @@ class RuminaScene(QObject):
             name = self.readString()
             source_filename = self.readString()
             plane = self.readUInt8()
-            highlighted = self.readBool()
+            curved = self.readBool()
             hidden = self.readBool()
             x = self.readDouble()
             y = self.readDouble()
@@ -96,7 +96,7 @@ class RuminaScene(QObject):
             item.name = name
             item.source = source_filename
             item.setPlane(plane)
-            item.highlighted = highlighted
+            item.curved = curved
             item.hidden = hidden
             item.setPos(QPointF(x, y))
             item.setZ(z)
@@ -151,7 +151,7 @@ class RuminaScene(QObject):
             self.writeString(item.name)
             self.writeString(item.source)
             self.writeUInt8(item.plane)
-            self.writeBool(item.highlighted)
+            self.writeBool(item.curved)
             self.writeBool(item.hidden)
             self.writeDouble(item.pos().x())
             self.writeDouble(item.pos().y())
@@ -197,14 +197,15 @@ class RuminaScene(QObject):
         image_packing = pack_images(sorted_items, True, () )
         ss = RuminaSpritesheet(image_packing.rect.wd, image_packing.rect.hgt)
         image_packing.render(ss)
-        ss.save(filename+'.png')
-        
+        ss_filename = filename+'.png'
+        ss.save(ss_filename)
+
         with open(filename, 'wb') as f:
             serializer = RuminaScene.Serializer(f)
             serializer.write(b'RUMINA')
             version = 1
             serializer.writeUInt32(version) # version
-            serializer.writeString(filename+'.png') # filename
+            serializer.writeString(ss_filename) # filename
             serializer.writeString('bg.webp') # background
             serializer.writeDouble(0) # bg_distance
             serializer.writeUInt32(len(self.items)) # number_of_items

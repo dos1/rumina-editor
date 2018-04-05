@@ -12,6 +12,6 @@ class RuminaSpritesheet(QPixmap):
         item.setSpritesheetPos(QPoint(pos[0], pos[1]))
         self.canvas.drawImage(pos[0], pos[1], item.image)
         
-    def save(self, url):
+    def save(self, *args, **kwargs):
         self.canvas.end()
-        super(RuminaSpritesheet, self).save(url)
+        super(RuminaSpritesheet, self).save(*args, **kwargs)

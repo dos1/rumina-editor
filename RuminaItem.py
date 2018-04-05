@@ -13,7 +13,7 @@ class RuminaItem(RuminaGraphicsObject):
     z = 0
     zOffset = 0
     curved = False
-    hidden = None
+    hidden = False
     px = 0.5
     py = 0.5
     rx = 0
