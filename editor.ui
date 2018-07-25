@@ -977,7 +977,8 @@
                   <string>Undo</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="edit-undo"/>
+                  <iconset theme="edit-undo">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -990,7 +991,8 @@
                   <string>Redo</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="edit-redo"/>
+                  <iconset theme="edit-redo">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -1016,7 +1018,8 @@
                   <string>Split</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="edit-cut"/>
+                  <iconset theme="edit-cut">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -1029,7 +1032,8 @@
                   <string>Duplicate</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="edit-duplicate"/>
+                  <iconset theme="edit-duplicate">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -1039,7 +1043,8 @@
                   <string>Delete</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="edit-delete"/>
+                  <iconset theme="edit-delete">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
@@ -1073,14 +1078,18 @@
       </widget>
       <widget class="QWidget" name="tab">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <attribute name="title">
         <string>Drawing order</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_17">
         <item>
-         <widget class="QListView" name="listView"/>
+         <widget class="QListView" name="drawingOrder">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QGroupBox" name="groupBox_5">
@@ -1095,7 +1104,7 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_5">
            <item>
-            <widget class="QToolButton" name="toolButton">
+            <widget class="QToolButton" name="moveUp">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -1112,7 +1121,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QToolButton" name="toolButton_2">
+            <widget class="QToolButton" name="moveDown">
              <property name="text">
               <string>Down</string>
              </property>
@@ -1288,7 +1297,14 @@ font-family: monospace;</string>
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="quickSave">
+        <property name="text">
+         <string>Quick save</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="exportSave">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -1296,7 +1312,7 @@ font-family: monospace;</string>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Export &amp;&amp; launch</string>
+         <string>Export &amp;&amp; save</string>
         </property>
         <property name="default">
          <bool>true</bool>
@@ -1313,7 +1329,7 @@ font-family: monospace;</string>
      <x>0</x>
      <y>0</y>
      <width>986</width>
-     <height>28</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuPlik">

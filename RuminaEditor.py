@@ -43,9 +43,15 @@ class RuminaEditor(QMainWindow):
         self.ui.spriteView.keyPressed.connect(self.keyPressed)
         self.ui.mapView.keyPressed.connect(self.keyPressed)
         
+        self.ui.drawingOrder.activated.connect(self.selectItem)
+        
         self.ui.deleteBtn.clicked.connect(lambda: self.currentItem.remove())
-        self.ui.pushButton.clicked.connect(lambda: self.scene.serialize('scene.ruminascene'))
+        self.ui.exportSave.clicked.connect(lambda: self.scene.serialize('scene.ruminascene'))
+        self.ui.quickSave.clicked.connect(lambda: self.scene.serialize('scene.ruminascene', quickSave=True))
         self.ui.center.clicked.connect(self.lookAtCenter)
+
+        self.ui.moveUp.clicked.connect(self.moveUp)
+        self.ui.moveDown.clicked.connect(self.moveDown)
         
         controls = [self.ui.name, self.ui.plane, self.ui.curved, self.ui.hidden, self.ui.x, self.ui.y, self.ui.z, self.ui.scaleVal,
                     self.ui.sx, self.ui.sy, self.ui.sw, self.ui.sh, self.ui.px, self.ui.py, self.ui.rx, self.ui.ry, self.ui.rz, self.ui.ox, self.ui.oy,
@@ -63,7 +69,7 @@ class RuminaEditor(QMainWindow):
         sliders = [ self.ui.scale, self.ui.opacity, self.ui.intensity, self.ui.speed ]
         for slider in sliders:
             slider.valueChanged.connect(self.applySliders)
-                
+                            
     def lookAtCenter(self):
         item = self.currentItem
         if not item:
@@ -76,6 +82,13 @@ class RuminaEditor(QMainWindow):
             print("not updating due to lock")
             return
         self.currentItem = None
+        
+        model = QStringListModel()
+        model.setStringList([str(x) for x in self.scene.items])
+        self.ui.drawingOrder.setModel(model)
+        if item:
+            self.ui.drawingOrder.setCurrentIndex(model.createIndex(self.scene.items.index(item), 0))
+        
         if not item:
             self.ui.tabWidgetPage1.setEnabled(False)
             self.ui.sceneGraphicsView.clearSelection()
@@ -189,6 +202,29 @@ class RuminaEditor(QMainWindow):
         print("updated item", item, "with values from sliders")
         self.updateProperties(self.currentItem)
     
+    def moveUp(self):
+        if self.currentItem:
+            prev = self.scene.getPrevItem(self.currentItem)
+            prevIdx = self.scene.items.index(prev)
+            curIdx = self.scene.items.index(self.currentItem)
+            self.scene.items[prevIdx], self.scene.items[curIdx] = self.scene.items[curIdx], self.scene.items[prevIdx]
+            self.updateProperties(self.currentItem)
+    
+    def moveDown(self):
+        if self.currentItem:
+            prev = self.scene.getNextItem(self.currentItem)
+            prevIdx = self.scene.items.index(prev)
+            curIdx = self.scene.items.index(self.currentItem)
+            self.scene.items[prevIdx], self.scene.items[curIdx] = self.scene.items[curIdx], self.scene.items[prevIdx]
+            self.updateProperties(self.currentItem)
+            
+    def selectItem(self, idx):
+        if self.currentItem:
+            self.currentItem.setSelected(False)
+        self.currentItem = self.scene.items[idx.row()]
+        self.currentItem.setSelected(True)
+        self.updateProperties(self.currentItem)
+    
     def keyPressed(self, event):
         self.ui.sceneGraphicsView.setFocus()
         if event.key() == Qt.Key_PageDown:
@@ -210,6 +246,9 @@ class RuminaEditor(QMainWindow):
         self.updateProperties(None)
         scene.render(self.ui.sceneGraphicsView.scene)
         self.ui.tabs.setTabs(self.scene.getSources())
+        model = QStringListModel()
+        model.setStringList([str(x) for x in self.scene.items])
+        self.ui.drawingOrder.setModel(model)
         
     def resizeEvent(self, event):
         self.resized.emit()

@@ -158,8 +158,8 @@ class RuminaScene(QObject):
             self.writeDouble(item.z)
             self.writeDouble(item.zOffset)
             self.writeDouble(item.scale())
-            self.writeUInt32(item.spritesheetPos.x())
-            self.writeUInt32(item.spritesheetPos.y())
+            self.writeUInt32(int(item.spritesheetPos.x()))
+            self.writeUInt32(int(item.spritesheetPos.y()))
             self.writeUInt32(item.image.width())
             self.writeUInt32(item.image.height())
             self.writeUInt32(item.sourcePos.x())
@@ -192,13 +192,15 @@ class RuminaScene(QObject):
         files.sort()
         return files
     
-    def serialize(self, filename):
-        sorted_items = sort_images_by_size(self.items)
-        image_packing = pack_images(sorted_items, True, () )
-        ss = RuminaSpritesheet(image_packing.rect.wd, image_packing.rect.hgt)
-        image_packing.render(ss)
+    def serialize(self, filename, quickSave=False):
         ss_filename = filename+'.png'
-        ss.save(ss_filename)
+
+        if not quickSave:
+            sorted_items = sort_images_by_size(self.items)
+            image_packing = pack_images(sorted_items, True, () )
+            ss = RuminaSpritesheet(image_packing.rect.wd, image_packing.rect.hgt)
+            image_packing.render(ss)
+            ss.save(ss_filename)
 
         with open(filename, 'wb') as f:
             serializer = RuminaScene.Serializer(f)
