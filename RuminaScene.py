@@ -193,14 +193,14 @@ class RuminaScene(QObject):
         return files
     
     def serialize(self, filename, quickSave=False):
-        ss_filename = filename+'.png'
+        ss_filename = filename+'.webp'
 
         if not quickSave:
             sorted_items = sort_images_by_size(self.items)
             image_packing = pack_images(sorted_items, True, () )
             ss = RuminaSpritesheet(image_packing.rect.wd, image_packing.rect.hgt)
             image_packing.render(ss)
-            ss.save(ss_filename)
+            ss.save(ss_filename, quality=100)
 
         with open(filename, 'wb') as f:
             serializer = RuminaScene.Serializer(f)
